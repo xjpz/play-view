@@ -1,0 +1,1 @@
+## Play Framework 模板里使用注入访问数据层

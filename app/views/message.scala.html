@@ -1,0 +1,19 @@
+@import services.ViewAccessPoint.Implicits._
+@import play.api.Play.current
+@(id:Long)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+  <p>
+      @defining(myDao.retrieve(id)){ mood =>
+        @mood.get.content
+      }
+  </p>
+
+</body>
+</html>
