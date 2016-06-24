@@ -18,7 +18,7 @@ class Messages @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
 
     import driver.api._
 
-    class MoodsTable(tag: Tag) extends Table[Message](tag, "news2mood") {
+    class MessagesTable(tag: Tag) extends Table[Message](tag, "news2mood") {
         def id = column[Option[Long]]("id", O.PrimaryKey, O.AutoInc)
 
         def content = column[Option[String]]("content")
@@ -32,15 +32,9 @@ class Messages @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
         def * = (content,inittime, updtime, tombstone, id) <>(Message.tupled, Message.unapply)
     }
 
-    val table = TableQuery[MoodsTable]
-
-    def queryById(id: Long): DBIO[Option[Message]] = table.filter(_.id === id).result.headOption
+    val table = TableQuery[MessagesTable]
 
     def retrieve(id: Long): Future[Option[Message]] = {
-        db.run(queryById(id))
-    }
-
-    def queryHead :Future[Option[Message]] = {
-        db.run(table.filter(_.tombstone === 0 ).sortBy(_.id.desc).result.headOption)
+        db.run(table.filter(_.id === id).result.headOption)
     }
 }
